@@ -33,7 +33,7 @@ jobs:
         run: java Main
 
       - name: Create Jar
-        run: jar cfe HelloWorld.jar Main Main.class
+        run: '"C:\Program Files\Java\jdk-17.0.1\bin\jar.exe" cfe HelloWorld.jar Main Main.class'
 
       - name: Upload Jar Artifact
         uses: actions/upload-artifact@v4
