@@ -25,21 +25,14 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
 
-      - name: Set Execution Policy
-        shell: powershell
-        run: |
-          Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
-
       # Runs a single command using the runners shell
       - name: Create First Folder and File
-        shell: powershell
         run: |
-          New-Item -Path "D:\Folder1" -ItemType Directory -Force
-          New-Item -Path "D"\Folder1\File1.txt" -ItemType File -Force
+          mkdir D:\Folder1
+          echo Hello > D:\Folder1\File1.txt
 
       # Runs a set of commands using the runners shell
       - name: Create Second Folder and File
-        shell: powershell
         run: |
-          New-Item -Path "D:\Folder2" -ItemType Directory -Force
-          New-Item -Path "D"\Folder2\File2.txt" -ItemType File -Force
+          mkdir D:\Folder2
+          echo Swapna > D:\Folder2\File2.txt
