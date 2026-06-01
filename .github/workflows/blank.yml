@@ -18,7 +18,7 @@ jobs:
   # This workflow contains a single job called "build"
   build:
     # The type of runner that the job will run on
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -26,11 +26,15 @@ jobs:
       - uses: actions/checkout@v4
 
       # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
+      - name: Create First Folder and File
+        shell: powershell
+        run: |
+          New-Item -Path "D:\Folder1" -ItemType Directory -Force
+          New-Item -Path "D"\Folder1\File1.txt" -ItemType File -Force
 
       # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
+      - name: Create Second Folder and File
+        shell: powershell
         run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+          New-Item -Path "D:\Folder2" -ItemType Directory -Force
+          New-Item -Path "D"\Folder2\File2.txt" -ItemType File -Force
