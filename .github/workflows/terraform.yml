@@ -1,17 +1,15 @@
 name: Terraform Deploy
 
 on:
-  # Triggers the workflow on push or pull request events but only for the "master" branche
   push:
     branches: [ "master" ]
   pull_request:
     branches: [ "master" ]
-
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 jobs:
-  terraform:
+
+  terraform-plan:
     runs-on: ubuntu-latest
 
     env:
@@ -31,6 +29,28 @@ jobs:
       - name: Terraform Plan
         working-directory: ./terraform
         run: terraform plan
+
+  terraform-apply:
+    needs: terraform-plan
+
+    runs-on: ubuntu-latest
+
+    environment:
+      name: dev
+
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init
+        working-directory: ./terraform
+        run: terraform init
 
       - name: Terraform Apply
         working-directory: ./terraform
