@@ -1,5 +1,6 @@
 bucket_name = "swapnasoppu"
 environment = "dev"
 region = "us-east-1"
-cidr_block = "10.0.0.0/17"
+cidr_block = "10.0.0.0/16"
 subnet_cidr_block = "10.0.1.0/24"
+vpc_id = "10.0.0.0/16"
