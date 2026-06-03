@@ -56,7 +56,7 @@ jobs:
         run: |
 
           docker build \
-          -t swapna-springboot-app:latest .
+          -t swapna-springboot-app:latest ./Docker
 
 
 
