@@ -1,0 +1,83 @@
+name: Build and Push Docker Image To ECR
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "master" branche
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+
+
+jobs:
+
+  docker-ecr:
+
+
+    runs-on: ubuntu-latest
+
+
+    steps:
+
+
+      # Checkout repository
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+
+
+      # AWS Authentication
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+
+        with:
+
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+          aws-region: us-east-1
+
+
+
+      # Login Docker to ECR
+      - name: Login to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v2
+
+
+
+      # Build image
+      - name: Build Docker Image
+
+        run: |
+
+          docker build \
+          -t swapna-springboot-app:latest .
+
+
+
+      # Tag image
+
+      - name: Tag Image
+
+        run: |
+
+          docker tag \
+          swapna-springboot-app:latest \
+          ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/swapna-springboot-app:latest
+
+
+
+
+      # Push image
+
+      - name: Push Image to ECR
+
+        run: |
+
+          docker push \
+          ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/swapna-springboot-app:latest
