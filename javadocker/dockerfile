@@ -1,0 +1,23 @@
+# Build stage: compile Java application
+FROM eclipse-temurin:21-jdk-jammy AS builder
+
+WORKDIR /app
+
+COPY HelloWebServer.java /app/
+
+# Compile and create package folder structure
+RUN javac -d . HelloWebServer.java
+
+
+# Runtime stage: smaller JRE image
+FROM eclipse-temurin:21-jre-jammy AS runtime
+
+WORKDIR /app
+
+# Copy compiled package folder
+COPY --from=builder /app/javadocker /app/javadocker
+
+
+EXPOSE 8080
+
+CMD ["java", "javadocker.HelloWebServer"]
