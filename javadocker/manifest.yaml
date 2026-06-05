@@ -1,0 +1,101 @@
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: java-web-deployment
+#   labels:
+#     app: java-web
+# spec:
+#   replicas: 1
+#   selector:
+#     matchLabels:
+#       app: java-web
+#   template:
+#     metadata:
+#       labels:
+#         app: java-web
+#     spec:
+#       containers:
+#         - name: java-web
+#           image: swapna171999/swapnaubuntu:latestv2
+#           ports:
+#             - containerPort: 8080
+#           imagePullPolicy: Always
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: java-web-service
+# spec:
+#   type: LoadBalancer
+#   selector:
+#     app: java-web
+#   ports:
+#     - protocol: TCP
+#       port: 8080
+#       targetPort: 8080
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: swapna
+
+---
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: java-web-deployment
+  namespace: swapna
+
+spec:
+  replicas: 2
+
+  selector:
+    matchLabels:
+      app: java-web
+
+  template:
+    metadata:
+      labels:
+        app: java-web
+
+    spec:
+      containers:
+
+      - name: java-web
+
+        image: swapna171999/swapnaubuntu:latestv2
+
+        ports:
+        - containerPort: 8080
+
+        resources:
+
+          requests:
+            cpu: "250m"
+            memory: "128Mi"
+
+          limits:
+            cpu: "500m"
+            memory: "256Mi"
+
+
+---
+apiVersion: v1
+kind: Service
+
+metadata:
+  name: java-web-service
+  namespace: swapna
+
+spec:
+
+  type: LoadBalancer
+
+  selector:
+    app: java-web
+
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
